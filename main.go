@@ -12,7 +12,7 @@ func setup() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	// Setup assets
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets-dist"))))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	// Setup pages
 	mux.Handle("/", rendering.Handler(IndexPage))
