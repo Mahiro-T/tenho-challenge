@@ -1,0 +1,1 @@
+[![Deploy to Firebase Hosting on merge](https://github.com/Mahiro-T/tenho-challenge/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/Mahiro-T/tenho-challenge/actions/workflows/firebase-hosting-merge.yml)

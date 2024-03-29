@@ -15,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: GOOS=js GOARCH=wasm go build -o public/main.wasm
+      - run: |
+         cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" public/.
+         GOOS=js GOARCH=wasm go build -o public/main.wasm
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
