@@ -1,0 +1,8 @@
+{{ define "CounterComponent" }}
+<div class="counter">
+    <div class="counter__value">{{ .Value }}</div>
+    <div class="counter__buttons">
+        <button class="counter__button" onclick="window.app.{{ .IncrementAction }}()">+</button>
+    </div>
+</div>
+{{ end }}
