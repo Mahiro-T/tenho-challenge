@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
       - run: |
           cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" public/.
           GOOS=js GOARCH=wasm go build -o public/main.wasm
