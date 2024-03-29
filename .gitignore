@@ -23,4 +23,4 @@ assets-dist
 .idea
 .vscode
 # Build file
-/main.wasm
+/public/main.wasm
