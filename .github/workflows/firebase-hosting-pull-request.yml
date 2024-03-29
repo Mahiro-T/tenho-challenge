@@ -6,8 +6,9 @@ name: Deploy to Firebase Hosting on PR
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    permissions: read-all
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - run: GOOS=js GOARCH=wasm go build -o public/main.wasm
