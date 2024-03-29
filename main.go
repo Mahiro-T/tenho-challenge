@@ -14,7 +14,7 @@ type page struct {
 	mahjongTehai string
 }
 
-func randomMahjongTile() string {
+func RandomMahjongTile() string {
 	rand.NewSource(time.Now().UnixNano())
 	r := rand.Intn(0x1F022-0x1F000) + 0x1F000
 	return string(rune(r))
@@ -23,7 +23,7 @@ func randomMahjongTile() string {
 func dealingTiles() string {
 	mahjongTehai := ""
 	for i := 0; i < 14; i++ {
-		mahjongTehai += randomMahjongTile()
+		mahjongTehai += RandomMahjongTile()
 	}
 
 	tehaiRunes := []rune(mahjongTehai)
@@ -37,6 +37,10 @@ func dealingTiles() string {
 }
 
 func (p *page) Render() vecty.ComponentOrHTML {
+	if p.mahjongTehai == "" {
+		p.mahjongTehai = "🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫"
+
+	}
 	return elem.Body(
 		elem.Heading1(vecty.Text("天和チャレンジ")),
 		elem.Div(elem.Heading1(vecty.Text(p.mahjongTehai)),
