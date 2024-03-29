@@ -17,7 +17,7 @@ type page struct {
 func randomMahjongTile() string {
 	rand.NewSource(time.Now().UnixNano())
 	r := rand.Intn(0x1F022-0x1F000) + 0x1F000
-	return string(r)
+	return string(rune(r))
 }
 
 func dealingTiles() string {
@@ -39,7 +39,7 @@ func dealingTiles() string {
 func (p *page) Render() vecty.ComponentOrHTML {
 	return elem.Body(
 		elem.Heading1(vecty.Text("天和チャレンジ")),
-		elem.Heading1(vecty.Text(p.mahjongTehai),
+		elem.Div(elem.Heading1(vecty.Text(p.mahjongTehai)),
 			elem.Button(
 				vecty.Markup(event.Click(func(_ *vecty.Event) {
 					p.mahjongTehai = dealingTiles()
