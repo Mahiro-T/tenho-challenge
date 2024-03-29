@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           GOOS=js GOARCH=wasm go build -o public/main.wasm
-          echo ${{AD_SENSE_TXT}} > public/ads.txt
+          echo ${{secrets.AD_SENSE_TXT}} > public/ads.txt
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
