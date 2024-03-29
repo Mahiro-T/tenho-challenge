@@ -22,3 +22,5 @@ go.work
 assets-dist
 .idea
 .vscode
+# Build file
+/main.wasm
