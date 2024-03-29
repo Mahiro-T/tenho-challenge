@@ -24,3 +24,4 @@ assets-dist
 .vscode
 # Build file
 /public/main.wasm
+/public/wasm_exec.js
