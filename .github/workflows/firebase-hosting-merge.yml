@@ -11,9 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: acifani/setup-tinygo@v2
       - run: |
-          GOOS=js GOARCH=wasm tinygo build -o public/main.wasm
+          GOOS=js GOARCH=wasm go build -o public/main.wasm
           echo ${{secrets.AD_SENSE_TXT}} > public/ads.txt
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
