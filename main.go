@@ -39,19 +39,41 @@ func dealingTiles() string {
 func (p *page) Render() vecty.ComponentOrHTML {
 	if p.mahjongTehai == "" {
 		p.mahjongTehai = "🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫"
-
 	}
 	return elem.Body(
-		elem.Heading1(vecty.Text("天和チャレンジ")),
-		elem.Div(elem.Heading1(vecty.Text(p.mahjongTehai)),
-			elem.Button(
-				vecty.Markup(event.Click(func(_ *vecty.Event) {
+		vecty.Markup(
+			vecty.Style("display", "flex"),
+			vecty.Style("flex-direction", "column"),
+			vecty.Style("justify-content", "center"),
+			vecty.Style("align-items", "center"),
+			vecty.Style("font-size", "6vw"),
+		),
+		elem.Div(
+			vecty.Markup(
+				vecty.Style("font-family", `"Sawarabi Mincho", serif`),
+				vecty.Style("font-weight", "400"),
+				vecty.Style("font-style", "normal"),
+			),
+			elem.Heading1(vecty.Text("天和チャレンジ"))),
+		elem.Div(
+			vecty.Markup(
+				vecty.Style("font-family", `AppleSymbols`),
+				vecty.Style("-webkit-user-select", "text"),
+				vecty.Style("user-select", "text"),
+				vecty.Style("font-size", "5vw"),
+			),
+			vecty.Text(p.mahjongTehai)),
+		elem.Div(elem.Button(
+			vecty.Markup(
+				vecty.Class("button"),
+				event.Click(func(_ *vecty.Event) {
 					p.mahjongTehai = dealingTiles()
 					vecty.Rerender(p)
 				})),
-				vecty.Text("配牌"),
-			),
-		))
+			vecty.Text("配牌"),
+		),
+		),
+	)
 }
 func main() {
 	vecty.SetTitle("天和チャレンジ")
