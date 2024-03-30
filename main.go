@@ -46,30 +46,40 @@ func (p *page) Render() vecty.ComponentOrHTML {
 			vecty.Style("flex-direction", "column"),
 			vecty.Style("justify-content", "center"),
 			vecty.Style("align-items", "center"),
-			vecty.Style("font-size", "6vw"),
 		),
+
 		elem.Div(
 			vecty.Markup(
 				vecty.Style("font-family", `"Sawarabi Mincho", serif`),
 				vecty.Style("font-weight", "400"),
 				vecty.Style("font-style", "normal"),
+				vecty.Style("font-size", "7vw"),
 			),
-			elem.Heading1(vecty.Text("天和チャレンジ"))),
+			vecty.Text("天和チャレンジ"),
+		),
+
 		elem.Div(
 			vecty.Markup(
 				vecty.Style("font-family", `AppleSymbols`),
 				vecty.Style("-webkit-user-select", "text"),
 				vecty.Style("user-select", "text"),
-				vecty.Style("font-size", "5vw"),
+				vecty.Style("font-size", "7vw"),
 			),
-			vecty.Text(p.mahjongTehai)),
+			vecty.Text(p.mahjongTehai),
+		),
+
+		elem.Div(
+			vecty.Text("下のボタンをクリックすると配牌されます"),
+		),
+
 		elem.Div(elem.Button(
 			vecty.Markup(
 				vecty.Class("button"),
 				event.Click(func(_ *vecty.Event) {
 					p.mahjongTehai = dealingTiles()
 					vecty.Rerender(p)
-				})),
+				}),
+			),
 			vecty.Text("配牌"),
 		),
 		),
