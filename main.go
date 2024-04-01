@@ -130,16 +130,18 @@ func (p *page) Render() vecty.ComponentOrHTML {
 			vecty.Text("下のボタンをクリックすると配牌されます"),
 		),
 
-		elem.Div(elem.Button(
-			vecty.Markup(
-				vecty.Class("button"),
-				event.Click(func(_ *vecty.Event) {
-					p.mahjongTehai = dealingTiles()
-					vecty.Rerender(p)
-				}),
+		elem.Div(
+			elem.Button(
+				vecty.Markup(
+					vecty.Class("button"),
+					event.Click(func(_ *vecty.Event) {
+						p.mahjongTehai = dealingTiles()
+						vecty.Rerender(p)
+					},
+					),
+				),
+				vecty.Text("配牌"),
 			),
-			vecty.Text("配牌"),
-		),
 		),
 	)
 }
