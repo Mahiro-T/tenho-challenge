@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -29,7 +28,6 @@ func dealingTiles() string {
 	mahjongPinzu := ""
 	for i := 0; i < 14; i++ {
 		mahjongTehaiTemp := RandomMahjongTile()
-		fmt.Println(mahjongTehaiTemp)
 		if mahjongTehaiTemp <= 0x1F003 {
 			mahjongHonorsWinds += string(rune(mahjongTehaiTemp))
 		} else if mahjongTehaiTemp <= 0x1F006 {
@@ -65,7 +63,6 @@ func dealingTiles() string {
 	})
 
 	sortedTehai := string(tehaiManzu) + string(tehaiSozu) + string(tehaiPinzu) + string(tehaiHonorsWinds) + string(tehaiHonorsDragons)
-	fmt.Println(sortedTehai)
 	return sortedTehai
 }
 
