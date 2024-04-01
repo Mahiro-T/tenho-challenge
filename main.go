@@ -45,23 +45,23 @@ func dealingTiles() string {
 
 	tehaiHonorsWinds := []rune(mahjongHonorsWinds)
 	sort.Slice(tehaiHonorsWinds, func(i, j int) bool {
-		return tehaiHonorsWinds[i] > tehaiHonorsWinds[j]
+		return tehaiHonorsWinds[i] < tehaiHonorsWinds[j]
 	})
 	tehaiHonorsDragons := []rune(mahjongHonorsDragons)
 	sort.Slice(tehaiHonorsDragons, func(i, j int) bool {
-		return tehaiHonorsDragons[i] > tehaiHonorsDragons[j]
+		return tehaiHonorsDragons[i] < tehaiHonorsDragons[j]
 	})
 	tehaiManzu := []rune(mahjongManzu)
 	sort.Slice(tehaiManzu, func(i, j int) bool {
-		return tehaiManzu[i] > tehaiManzu[j]
+		return tehaiManzu[i] < tehaiManzu[j]
 	})
 	tehaiSozu := []rune(mahjongSozu)
 	sort.Slice(tehaiSozu, func(i, j int) bool {
-		return tehaiSozu[i] > tehaiSozu[j]
+		return tehaiSozu[i] < tehaiSozu[j]
 	})
 	tehaiPinzu := []rune(mahjongPinzu)
 	sort.Slice(tehaiPinzu, func(i, j int) bool {
-		return tehaiPinzu[i] > tehaiPinzu[j]
+		return tehaiPinzu[i] < tehaiPinzu[j]
 	})
 
 	sortedTehai := string(tehaiManzu) + string(tehaiSozu) + string(tehaiPinzu) + string(tehaiHonorsWinds) + string(tehaiHonorsDragons)
