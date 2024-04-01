@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
 	"math/rand"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -27,19 +27,41 @@ func dealingTiles() string {
 	mahjongManzu := ""
 	mahjongSozu := ""
 	mahjongPinzu := ""
-	for i := 0; i < 14; i++ {
+	for {
 		mahjongTehaiTemp := RandomMahjongTile()
-		fmt.Println(mahjongTehaiTemp)
 		if mahjongTehaiTemp <= 0x1F003 {
-			mahjongHonorsWinds += string(rune(mahjongTehaiTemp))
+			if strings.Count(mahjongHonorsWinds, string(rune(mahjongTehaiTemp))) < 4 {
+				mahjongHonorsWinds += string(rune(mahjongTehaiTemp))
+			} else {
+				continue
+			}
 		} else if mahjongTehaiTemp <= 0x1F006 {
-			mahjongHonorsDragons += string(rune(mahjongTehaiTemp))
+			if strings.Count(mahjongHonorsDragons, string(rune(mahjongTehaiTemp))) < 4 {
+				mahjongHonorsDragons += string(rune(mahjongTehaiTemp))
+			} else {
+				continue
+			}
 		} else if mahjongTehaiTemp <= 0x1F00F {
-			mahjongManzu += string(rune(mahjongTehaiTemp))
+			if strings.Count(mahjongManzu, string(rune(mahjongTehaiTemp))) < 4 {
+				mahjongManzu += string(rune(mahjongTehaiTemp))
+			} else {
+				continue
+			}
 		} else if mahjongTehaiTemp <= 0x1F018 {
-			mahjongSozu += string(rune(mahjongTehaiTemp))
+			if strings.Count(mahjongSozu, string(rune(mahjongTehaiTemp))) < 4 {
+				mahjongSozu += string(rune(mahjongTehaiTemp))
+			} else {
+				continue
+			}
 		} else if mahjongTehaiTemp <= 0x1F021 {
-			mahjongPinzu += string(rune(mahjongTehaiTemp))
+			if strings.Count(mahjongPinzu, string(rune(mahjongTehaiTemp))) < 4 {
+				mahjongPinzu += string(rune(mahjongTehaiTemp))
+			} else {
+				continue
+			}
+		}
+		if len(mahjongHonorsWinds)+len(mahjongHonorsDragons)+len(mahjongManzu)+len(mahjongPinzu)+len(mahjongSozu) > 4*14 {
+			break
 		}
 	}
 
@@ -65,7 +87,6 @@ func dealingTiles() string {
 	})
 
 	sortedTehai := string(tehaiManzu) + string(tehaiSozu) + string(tehaiPinzu) + string(tehaiHonorsWinds) + string(tehaiHonorsDragons)
-	fmt.Println(sortedTehai)
 	return sortedTehai
 }
 
