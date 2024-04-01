@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/hexops/vecty"
 	"github.com/hexops/vecty/elem"
 	"github.com/hexops/vecty/event"
@@ -14,25 +15,57 @@ type page struct {
 	mahjongTehai string
 }
 
-func RandomMahjongTile() string {
+func RandomMahjongTile() int {
 	rand.NewSource(time.Now().UnixNano())
 	r := rand.Intn(0x1F022-0x1F000) + 0x1F000
-	return string(rune(r))
+	return r
 }
 
 func dealingTiles() string {
-	mahjongTehai := ""
+	mahjongHonorsWinds := ""
+	mahjongHonorsDragons := ""
+	mahjongManzu := ""
+	mahjongSozu := ""
+	mahjongPinzu := ""
 	for i := 0; i < 14; i++ {
-		mahjongTehai += RandomMahjongTile()
+		mahjongTehaiTemp := RandomMahjongTile()
+		fmt.Println(mahjongTehaiTemp)
+		if mahjongTehaiTemp <= 0x1F003 {
+			mahjongHonorsWinds += string(rune(mahjongTehaiTemp))
+		} else if mahjongTehaiTemp <= 0x1F006 {
+			mahjongHonorsDragons += string(rune(mahjongTehaiTemp))
+		} else if mahjongTehaiTemp <= 0x1F00F {
+			mahjongManzu += string(rune(mahjongTehaiTemp))
+		} else if mahjongTehaiTemp <= 0x1F018 {
+			mahjongSozu += string(rune(mahjongTehaiTemp))
+		} else if mahjongTehaiTemp <= 0x1F021 {
+			mahjongPinzu += string(rune(mahjongTehaiTemp))
+		}
 	}
 
-	tehaiRunes := []rune(mahjongTehai)
-
-	sort.Slice(tehaiRunes, func(i, j int) bool {
-		return tehaiRunes[i] > tehaiRunes[j]
+	tehaiHonorsWinds := []rune(mahjongHonorsWinds)
+	sort.Slice(tehaiHonorsWinds, func(i, j int) bool {
+		return tehaiHonorsWinds[i] > tehaiHonorsWinds[j]
+	})
+	tehaiHonorsDragons := []rune(mahjongHonorsDragons)
+	sort.Slice(tehaiHonorsDragons, func(i, j int) bool {
+		return tehaiHonorsDragons[i] > tehaiHonorsDragons[j]
+	})
+	tehaiManzu := []rune(mahjongManzu)
+	sort.Slice(tehaiManzu, func(i, j int) bool {
+		return tehaiManzu[i] > tehaiManzu[j]
+	})
+	tehaiSozu := []rune(mahjongSozu)
+	sort.Slice(tehaiSozu, func(i, j int) bool {
+		return tehaiSozu[i] > tehaiSozu[j]
+	})
+	tehaiPinzu := []rune(mahjongPinzu)
+	sort.Slice(tehaiPinzu, func(i, j int) bool {
+		return tehaiPinzu[i] > tehaiPinzu[j]
 	})
 
-	sortedTehai := string(tehaiRunes)
+	sortedTehai := string(tehaiManzu) + string(tehaiSozu) + string(tehaiPinzu) + string(tehaiHonorsWinds) + string(tehaiHonorsDragons)
+	fmt.Println(sortedTehai)
 	return sortedTehai
 }
 
