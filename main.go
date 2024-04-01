@@ -91,9 +91,26 @@ func dealingTiles() string {
 }
 
 func (p *page) Render() vecty.ComponentOrHTML {
+	var twitterButton vecty.ComponentOrHTML
+
 	if p.mahjongTehai == "" {
 		p.mahjongTehai = "🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫"
+	} else {
+		twitterButton = elem.Div(
+			elem.Anchor(
+				vecty.Markup(
+					vecty.Property("href", "https://twitter.com/intent/tweet?text="+p.mahjongTehai+"%0Ahttps://xn--0tr30i.xn--08j2a8s0b5d8jq891d.com/"+"&hashtags=天和チャレンジ"),
+					vecty.Property("target", "_blank"),
+					vecty.Property("rel", `"noopener noreferrer"`),
+					vecty.Class("button"),
+					vecty.Style("margin-top", "6%"),
+					vecty.Style("margin-bottom", "3%"),
+				),
+				vecty.Text("𝕏に投稿する"),
+			),
+		)
 	}
+
 	return elem.Body(
 		vecty.Markup(
 			vecty.Style("display", "flex"),
@@ -131,18 +148,30 @@ func (p *page) Render() vecty.ComponentOrHTML {
 		),
 
 		elem.Div(
-			elem.Button(
+			elem.Div(
 				vecty.Markup(
-					vecty.Class("button"),
-					event.Click(func(_ *vecty.Event) {
-						p.mahjongTehai = dealingTiles()
-						vecty.Rerender(p)
-					},
-					),
+					vecty.Style("font-family", `"Sawarabi Mincho", serif`),
+					vecty.Style("font-weight", "400"),
+					vecty.Style("font-style", "normal"),
 				),
-				vecty.Text("配牌"),
-			),
-		),
+
+				elem.Button(
+					vecty.Markup(
+						vecty.Class("button"),
+						vecty.Style("margin-top", "6%"),
+						vecty.Style("margin-bottom", "3%"),
+
+						event.Click(
+							func(_ *vecty.Event) {
+								p.mahjongTehai = dealingTiles()
+								vecty.Rerender(p)
+							},
+						),
+					),
+					vecty.Text("配牌"),
+				),
+			)),
+		twitterButton,
 	)
 }
 func main() {
