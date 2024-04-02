@@ -60,7 +60,7 @@ func dealingTiles() string {
 				continue
 			}
 		}
-		if len(mahjongHonorsWinds)+len(mahjongHonorsDragons)+len(mahjongManzu)+len(mahjongPinzu)+len(mahjongSozu) > 4*14 {
+		if len(mahjongHonorsWinds)+len(mahjongHonorsDragons)+len(mahjongManzu)+len(mahjongPinzu)+len(mahjongSozu) >= 4*14 {
 			break
 		}
 	}
