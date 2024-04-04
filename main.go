@@ -15,86 +15,75 @@ type page struct {
 	mahjongTehai string
 }
 
-func RandomMahjongTile() int {
-	rand.NewSource(time.Now().UnixNano())
-	r := rand.Intn(0x1F022-0x1F000) + 0x1F000
-	return r
+func intSliceFromRange(min, max int) []int {
+	s := make([]int, max-min+1)
+	for i := range s {
+		s[i] = min + i
+	}
+	return s
 }
 
-func dealingTiles() string {
-	mahjongHonorsWinds := ""
-	mahjongHonorsDragons := ""
-	mahjongManzu := ""
-	mahjongSozu := ""
-	mahjongPinzu := ""
-	for {
-		mahjongTehaiTemp := RandomMahjongTile()
-		if mahjongTehaiTemp <= 0x1F003 {
-			if strings.Count(mahjongHonorsWinds, string(rune(mahjongTehaiTemp))) < 4 {
-				mahjongHonorsWinds += string(rune(mahjongTehaiTemp))
-			} else {
-				continue
-			}
-		} else if mahjongTehaiTemp <= 0x1F006 {
-			if strings.Count(mahjongHonorsDragons, string(rune(mahjongTehaiTemp))) < 4 {
-				mahjongHonorsDragons += string(rune(mahjongTehaiTemp))
-			} else {
-				continue
-			}
-		} else if mahjongTehaiTemp <= 0x1F00F {
-			if strings.Count(mahjongManzu, string(rune(mahjongTehaiTemp))) < 4 {
-				mahjongManzu += string(rune(mahjongTehaiTemp))
-			} else {
-				continue
-			}
-		} else if mahjongTehaiTemp <= 0x1F018 {
-			if strings.Count(mahjongSozu, string(rune(mahjongTehaiTemp))) < 4 {
-				mahjongSozu += string(rune(mahjongTehaiTemp))
-			} else {
-				continue
-			}
-		} else if mahjongTehaiTemp <= 0x1F021 {
-			if strings.Count(mahjongPinzu, string(rune(mahjongTehaiTemp))) < 4 {
-				mahjongPinzu += string(rune(mahjongTehaiTemp))
-			} else {
-				continue
-			}
-		}
-		if len(mahjongHonorsWinds)+len(mahjongHonorsDragons)+len(mahjongManzu)+len(mahjongPinzu)+len(mahjongSozu) >= 4*14 {
-			break
+func setOfMahjongTiles() []int {
+	const (
+		beginOfMahjongTiles = 0x1F000
+		endOfMahjongTiles   = 0x1F021
+	)
+	return intSliceFromRange(beginOfMahjongTiles, endOfMahjongTiles)
+}
+
+func repeatSlice[T any](size int, v []T) []T {
+	s := make([]T, 0, size*len(v))
+	for i := 0; i < size; i++ {
+		s = append(s, v...)
+	}
+	return s
+}
+
+func mahjongTiles() []int {
+	return repeatSlice(4, setOfMahjongTiles())
+}
+
+func orderOfMahjongTileTypes(tile int) int {
+	type tileRange struct{ begin, end, order int }
+	const orderOfUnknown = -1
+	tileRanges := []tileRange{
+		{begin: 0x1F000, end: 0x1F003, order: 3}, // Wind Tiles
+		{begin: 0x1F004, end: 0x1F006, order: 4}, // Dragon Tiles
+		{begin: 0x1F007, end: 0x1F00F, order: 0}, // Character Tiles
+		{begin: 0x1F010, end: 0x1F018, order: 1}, // Bamboo Tiles
+		{begin: 0x1F019, end: 0x1F021, order: 2}, // Circle Tiles
+	}
+	for _, r := range tileRanges {
+		if r.begin <= tile && tile <= r.end {
+			return r.order
 		}
 	}
+	return orderOfUnknown
+}
 
-	tehaiHonorsWinds := []rune(mahjongHonorsWinds)
-	sort.Slice(tehaiHonorsWinds, func(i, j int) bool {
-		return tehaiHonorsWinds[i] < tehaiHonorsWinds[j]
-	})
-	tehaiHonorsDragons := []rune(mahjongHonorsDragons)
-	sort.Slice(tehaiHonorsDragons, func(i, j int) bool {
-		return tehaiHonorsDragons[i] < tehaiHonorsDragons[j]
-	})
-	tehaiManzu := []rune(mahjongManzu)
-	sort.Slice(tehaiManzu, func(i, j int) bool {
-		return tehaiManzu[i] < tehaiManzu[j]
-	})
-	tehaiSozu := []rune(mahjongSozu)
-	sort.Slice(tehaiSozu, func(i, j int) bool {
-		return tehaiSozu[i] < tehaiSozu[j]
-	})
-	tehaiPinzu := []rune(mahjongPinzu)
-	sort.Slice(tehaiPinzu, func(i, j int) bool {
-		return tehaiPinzu[i] < tehaiPinzu[j]
-	})
+const countOfDealingTiles = 14
 
-	sortedTehai := string(tehaiManzu) + string(tehaiSozu) + string(tehaiPinzu) + string(tehaiHonorsWinds) + string(tehaiHonorsDragons)
-	return sortedTehai
+func dealingTiles() string {
+	tiles := mahjongTiles()
+	rand.Shuffle(len(tiles), func(i, j int) { tiles[i], tiles[j] = tiles[j], tiles[i] })
+	dealingTiles := tiles[:countOfDealingTiles]
+	sort.Ints(dealingTiles)
+	sort.SliceStable(dealingTiles, func(i, j int) bool {
+		return orderOfMahjongTileTypes(dealingTiles[i]) < orderOfMahjongTileTypes(dealingTiles[j])
+	})
+	dealingTilesStr := make([]string, len(dealingTiles))
+	for i, tile := range dealingTiles {
+		dealingTilesStr[i] = string(rune(tile))
+	}
+	return strings.Join(dealingTilesStr, "")
 }
 
 func (p *page) Render() vecty.ComponentOrHTML {
 	var twitterButton vecty.ComponentOrHTML
 
 	if p.mahjongTehai == "" {
-		p.mahjongTehai = "🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫🀫"
+		const mahjongTailBack = "\U0001F02B"
+		p.mahjongTehai = strings.Repeat(mahjongTailBack, countOfDealingTiles)
 	} else {
 		twitterButton = elem.Div(
 			elem.Anchor(
@@ -175,6 +164,7 @@ func (p *page) Render() vecty.ComponentOrHTML {
 	)
 }
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	vecty.SetTitle("天和チャレンジ")
 	vecty.RenderBody(new(page))
 }
